@@ -27,6 +27,9 @@ public:
     const Matrix operator*(const T&) const;
     vector <T>& operator[](int i) { return data[i]; };
     const vector<T>& operator[](int i) const { return data[i]; };
+    // Functions
+    Matrix transposition();
+    const Matrix get_power(int) const;
 };
 
 template<typename T>
@@ -76,6 +79,26 @@ const Matrix<T> Matrix<T>::operator*(const T& k) const {
     return res;
 }
 
+template<typename T>
+Matrix<T> Matrix<T>::transposition() {
+    Matrix res(m, n);
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            res[i][j] = data[j][i];
+        }
+    }
+    return res;
+}
+
+template<typename T>
+const Matrix<T> Matrix<T>::get_power(int p) const {
+    if (p == 1) return (*this);
+    if (p & 1) {
+        return ((*this) * (*this)).get_power(p / 2) * (*this);
+    } else {
+        return ((*this) * (*this)).get_power(p / 2);
+    }
+}
 
 
 #endif //MATRIX_MATRIX_H
