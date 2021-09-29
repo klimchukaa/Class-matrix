@@ -30,6 +30,9 @@ public:
     // Functions
     Matrix transposition();
     const Matrix get_power(int) const;
+    // In & out
+    template<typename Type> friend istream& operator>>(istream&, Matrix<Type>&);
+    template<typename Type> friend ostream& operator<<(ostream&, const Matrix<Type>&);
 };
 
 template<typename T>
@@ -98,6 +101,26 @@ const Matrix<T> Matrix<T>::get_power(int p) const {
     } else {
         return ((*this) * (*this)).get_power(p / 2);
     }
+}
+
+template<typename Type>
+istream &operator>>(istream &in, Matrix<Type> &a) {
+    for (int i = 0; i < a.n; ++i) {
+        for (int j = 0; j < a.m; ++j) {
+            in >> a[i][j];
+        }
+    }
+    return in;
+}
+
+template<typename Type>
+ostream &operator<<(ostream &out, const Matrix<Type> &a) {
+    for (int i = 0; i < a.n; ++i) {
+        for (int j = 0; j < a.m; ++j) {
+            out << a[i][j];
+        }
+    }
+    return out;
 }
 
 
