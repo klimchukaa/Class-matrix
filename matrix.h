@@ -49,6 +49,9 @@ Matrix<T>::Matrix(int n_, int m_) {
 
 template<typename T>
 const Matrix<T> Matrix<T>::operator+(const Matrix& a) const {
+    if (n != a.n || m != a.m) {
+        throw::invalid_argument("Different sizes of matrix");
+    }
     Matrix<T> res(n, m);
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < m; ++j) {
@@ -60,6 +63,9 @@ const Matrix<T> Matrix<T>::operator+(const Matrix& a) const {
 
 template<typename T>
 const Matrix<T> Matrix<T>::operator*(const Matrix& a) const {
+    if (m != a.n) {
+        throw::invalid_argument("Sizes of matrix are invalid to multiply");
+    }
     Matrix<T> res(n, a.m);
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < a.m; ++j) {
@@ -95,6 +101,9 @@ Matrix<T> Matrix<T>::transposition() {
 
 template<typename T>
 const Matrix<T> Matrix<T>::get_power(int p) const {
+    if (n != m) {
+        throw::invalid_argument("Matrix is not square");
+    }
     if (p == 1) return (*this);
     if (p & 1) {
         return ((*this) * (*this)).get_power(p / 2) * (*this);
@@ -117,8 +126,9 @@ template<typename Type>
 ostream &operator<<(ostream &out, const Matrix<Type> &a) {
     for (int i = 0; i < a.n; ++i) {
         for (int j = 0; j < a.m; ++j) {
-            out << a[i][j];
+            out << a[i][j] << " ";
         }
+        cout << "\n";
     }
     return out;
 }
