@@ -7,6 +7,8 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
+#include <numeric>
 
 using namespace std;
 
@@ -30,6 +32,7 @@ public:
     // Functions
     Matrix transposition();
     const Matrix get_power(int) const;
+    int determinant();
     // In & out
     template<typename Type> friend istream& operator>>(istream&, Matrix<Type>&);
     template<typename Type> friend ostream& operator<<(ostream&, const Matrix<Type>&);
@@ -112,6 +115,32 @@ const Matrix<T> Matrix<T>::get_power(int p) const {
     }
 }
 
+template<typename T>
+int Matrix<T>::determinant() {
+    if (n != m) {
+        throw::invalid_argument("Matrix is not square");
+    }
+    int res = 0;
+    vector <int> p(n);
+    iota(p.begin(), p.end(), 0);
+    do{
+        int inv = 0;
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < i; ++j) {
+                if (p[j] > p[i]) inv++;
+            }
+        }
+        inv &= 1;
+        inv = inv * 2 - 1;
+        T mul = 1;
+        for (int i = 0; i < n; ++i) {
+            mul *= data[p[i]][i];
+        }
+        res += mul * inv;
+    } while (next_permutation(p.begin(), p.end()));
+    return res;
+}
+
 template<typename Type>
 istream &operator>>(istream &in, Matrix<Type> &a) {
     for (int i = 0; i < a.n; ++i) {
@@ -132,6 +161,5 @@ ostream &operator<<(ostream &out, const Matrix<Type> &a) {
     }
     return out;
 }
-
 
 #endif //MATRIX_MATRIX_H

@@ -27,6 +27,11 @@ int main() {
     } catch (const invalid_argument& e) {
         cout << e.what() << "\n";
     }
+    try {
+        cout << "Determinant of a:\n" << a.determinant() << "\n";
+    } catch (const invalid_argument& e) {
+        cout << e.what() << "\n";
+    }
     cout << "Transpose a:\n" << a.transposition();
     return 0;
 }
