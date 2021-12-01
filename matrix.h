@@ -131,7 +131,7 @@ int Matrix<T>::determinant() {
             }
         }
         inv &= 1;
-        inv = inv * 2 - 1;
+        inv = 1 - inv * 2;
         T mul = 1;
         for (int i = 0; i < n; ++i) {
             mul *= data[p[i]][i];
